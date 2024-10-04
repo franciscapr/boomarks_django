@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth import get_user_model
+from .models import Profile
 
 class LoginForm(forms.Form):
     username = forms.CharField()
@@ -24,3 +25,13 @@ def clean_password2(self):    # Definimos un método para comparar la segundo co
     if cd['passwoard'] != cd['password2']:
         raise forms.ValidationError("Passwords don't match.")    # Error de validación si las contraseñas no coinciden
     return cd['password2']
+
+class UserEditForm(forms.ModelForm):    # Permite editar el nombre, apellido y correo electronico
+    class Meta:
+        model = get_user_model()
+        fields = ['first_name', 'last_name', 'email']
+        
+class ProfileEditForm(forms.ModelForm):    # Permite editar los datos del perfil que se guardan en el modelos de perfil 
+    class Meta:
+        model = Profile
+        fields = ['date_of_birth', 'photo']
